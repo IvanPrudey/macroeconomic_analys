@@ -1,5 +1,6 @@
 import csv
-
+import os
+from pathlib import Path
 
 from constants import EXPECTED_HEADERS
 
@@ -16,9 +17,17 @@ def verify_csv_headers(file_path, expected_headers_str):
         return False
 
 
-# def main():
-#     pass
+def main():
+    data_folder = 'data'
+    full_path_data = os.path.abspath(data_folder)
+    data_files_name_list = []
+    if os.path.exists(data_folder):
+        for filename in os.listdir(data_folder):
+            file_path = os.path.join(data_folder, filename)
+            if os.path.isfile(file_path) and filename.endswith('.csv'):
+                data_files_name_list.append(filename)
+        print(f'список файлов в папке {full_path_data} - {data_files_name_list}')
 
 
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
