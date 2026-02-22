@@ -17,3 +17,19 @@ class AverageGdpReport(Report):
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
         return f'Результат работы среднего ВПП по стране'
+
+
+class SomeReport(Report):
+
+    @property
+    def name(self) -> str:
+        return 'some'
+
+    @property
+    def headers(self) -> List[str]:
+        return ['some_1', 'some_2']
+
+    def calculate(
+            self, data: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
+        return f'Результат работы {self.name} отчета с столбцами {self.headers}'
