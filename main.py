@@ -1,10 +1,32 @@
+import argparse
 import csv
 import os
 import sys
 
 from tabulate import tabulate
 
-from constants import EXPECTED_HEADERS, DATA_FOLDER
+from constants import (
+    AVAILABLE_REPORTS,
+    EXPECTED_HEADERS,
+    DATA_FOLDER,
+)
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '--files',
+        nargs='+',
+        required=True,
+        help='Перечень .csv файлов для анализа(можно указать несколько через пробел)'
+    )
+    parser.add_argument(
+        '--report',
+        required=True,
+        choices=list(AVAILABLE_REPORTS.keys()),
+        help=f"Доступные варианты отчетов {', '.join(AVAILABLE_REPORTS.keys())}"
+    )
+    return parser.parse_args()
 
 
 def verify_csv_headers(file_path, expected_headers_str):
@@ -76,6 +98,10 @@ def print_report(massive_data_list):
 
 
 def main():
+    console_args = parse_arguments()
+    print(console_args)
+    print(type(console_args))
+    print('----------------------------------------------------------------------')
     data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
     if not data_files_name_list:
         print('Нет файлов данных .csv для обработки. Программа завершена')
