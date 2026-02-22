@@ -7,12 +7,12 @@ from tabulate import tabulate
 
 from constants import (
     AVAILABLE_REPORTS,
-    EXPECTED_HEADERS,
     DATA_FOLDER,
+    EXPECTED_HEADERS,
 )
 
 
-def parse_arguments():
+def parse_arguments(available_reports):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--files',
@@ -23,8 +23,8 @@ def parse_arguments():
     parser.add_argument(
         '--report',
         required=True,
-        choices=list(AVAILABLE_REPORTS.keys()),
-        help=f"Доступные варианты отчетов {', '.join(AVAILABLE_REPORTS.keys())}"
+        choices=list(available_reports.keys()),
+        help=f"Доступные варианты отчетов {', '.join(available_reports.keys())}"
     )
     parse_args = parser.parse_args()
     return parse_args.files, parse_args.report
@@ -56,16 +56,16 @@ def verify_csv_headers(file_path, expected_headers_str):
 
 
 def load_data_from_csv_files(
-        data_files_pathes, full_path_data, expected_headers
+        data_files_pathes, full_path_data_folder, expected_headers
 ):
     full_massive_data = []
     for file_path in data_files_pathes:
-        full_file_path = '/'.join([full_path_data, file_path])
+        full_file_path = os.path.join(full_path_data_folder, file_path)
         if not os.path.exists(full_file_path):
             print(f'Файл {full_file_path} отсутствует')
             sys.exit(1)
         if verify_csv_headers(full_file_path, expected_headers):
-            print(f'{full_file_path} - заголовки корректны, стартуем загрузку даных')
+            print(f'{full_file_path} - заголовки корректны, стартуем загрузку данных')
             try:
                 with open(full_file_path, 'r', encoding='utf-8') as file:
                     reader = csv.DictReader(file)
@@ -103,22 +103,26 @@ def print_report(massive_data_list):
 
 
 def main():
-    console_files, console_report_name = parse_arguments()
+    console_files, console_report_name = parse_arguments(AVAILABLE_REPORTS)
+    if console_report_name not in AVAILABLE_REPORTS.keys(): # можно убрать, т.к. choices уже есть в argparse
+        print(f'Отчета с именем {console_report_name} нет в списке доступных')
+        print(f'Доступные отчеты: {", ".join(AVAILABLE_REPORTS.keys())}')
+        sys.exit(1)
     print(f'Старт отчета: {console_report_name}')
     print(f'Файлы для анализа: {console_files}')
-    print('--------------111---------------')
     full_path_data = os.path.abspath(DATA_FOLDER)
-    print(full_path_data)
-    print('--------------222---------------')
     full_massive_data = load_data_from_csv_files(
         console_files, full_path_data, EXPECTED_HEADERS
     )
-    
     if not full_massive_data:
         print('Нет данных для анализа')
         sys.exit(1)
     print(f'Загружено {len(full_massive_data)} записей!')
-    # print_report(full_massive_data)
+    report_class = AVAILABLE_REPORTS[console_report_name]
+    report = report_class()
+    report_data = report.calculate(full_massive_data)
+    print('--------------111---------------')
+    print(report_data)
 
 
 if __name__ == '__main__':
