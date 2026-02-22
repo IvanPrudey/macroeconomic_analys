@@ -2,6 +2,8 @@ import csv
 import os
 import sys
 
+from tabulate import tabulate
+
 from constants import EXPECTED_HEADERS, DATA_FOLDER
 
 
@@ -60,6 +62,19 @@ def load_data_from_csv_files(
     return full_massive_data
 
 
+def print_report(massive_data_list):
+    if not massive_data_list:
+        print('Данные для вывода отсутствуют')
+        return
+    headers_of_table = list(massive_data_list[0].keys())
+    table_data = []
+    for i, row in enumerate(massive_data_list, 1):
+        row_values = [row[key] for key in headers_of_table]
+        table_data.append([i] + row_values)
+        display_headers = [''] + headers_of_table
+    print(tabulate(table_data, headers=display_headers, tablefmt='grid'))
+
+
 def main():
     data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
     if not data_files_name_list:
@@ -67,9 +82,10 @@ def main():
         sys.exit(1)
     print(f'список файлов в папке data/ {data_files_name_list}')
     full_path_data = os.path.abspath(DATA_FOLDER)
-    full_massive_data = load_data_from_csv_files(full_path_data, data_files_name_list, EXPECTED_HEADERS)
-    print(full_massive_data)
-
+    full_massive_data = load_data_from_csv_files(
+        full_path_data, data_files_name_list, EXPECTED_HEADERS
+    )
+    print_report(full_massive_data)
 
 
 if __name__ == '__main__':
