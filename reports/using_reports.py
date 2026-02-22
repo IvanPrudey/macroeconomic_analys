@@ -16,7 +16,7 @@ class AverageGdpReport(Report):
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        return f'Результат работы среднего ВПП по стране'
+        return f'Результат {self.name} отчета со столбцами {self.headers}'
 
 
 class SomeReport(Report):
@@ -32,4 +32,4 @@ class SomeReport(Report):
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        return f'Результат работы {self.name} отчета с столбцами {self.headers}'
+        return f'Результат {self.name} отчета со столбцами {self.headers}'
