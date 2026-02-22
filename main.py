@@ -26,7 +26,8 @@ def parse_arguments():
         choices=list(AVAILABLE_REPORTS.keys()),
         help=f"Доступные варианты отчетов {', '.join(AVAILABLE_REPORTS.keys())}"
     )
-    return parser.parse_args().files, parser.parse_args().report
+    parse_args = parser.parse_args()
+    return parse_args.files, parse_args.report
 
 
 def verify_csv_headers(file_path, expected_headers_str):
@@ -41,27 +42,29 @@ def verify_csv_headers(file_path, expected_headers_str):
         return False
 
 
-def create_list_of_files_csv(data_folder):
-    data_files_name_list = []
-    if os.path.exists(data_folder):
-        for filename in os.listdir(data_folder):
-            file_path = os.path.join(data_folder, filename)
-            if os.path.isfile(file_path) and filename.endswith('.csv'):
-                data_files_name_list.append(filename)
-        return data_files_name_list
-    else:
-        print(f'Папка {data_folder} не существует')
-        return data_files_name_list
+# def create_list_of_files_csv(data_folder):
+#     data_files_name_list = []
+#     if os.path.exists(data_folder):
+#         for filename in os.listdir(data_folder):
+#             file_path = os.path.join(data_folder, filename)
+#             if os.path.isfile(file_path) and filename.endswith('.csv'):
+#                 data_files_name_list.append(filename)
+#         return data_files_name_list
+#     else:
+#         print(f'Папка {data_folder} не существует')
+#         return data_files_name_list
 
 
 def load_data_from_csv_files(
-        full_path_data, data_files_name_list, expected_headers
+        data_files_pathes, expected_headers
 ):
     full_massive_data = []
-    for filename in data_files_name_list:
-        file_path = os.path.join(full_path_data, filename)
+    for file_path in data_files_pathes:
+        if not os.path.exists(file_path):
+            print(f'Файл {file_path} отсутствует')
+            sys.exit(1)
         if verify_csv_headers(file_path, expected_headers):
-            print(f'{filename} - заголовки корректны, стартуем загрузку даных')
+            print(f'{file_path} - заголовки корректны, стартуем загрузку даных')
             try:
                 with open(file_path, 'r', encoding='utf-8') as file:
                     reader = csv.DictReader(file)
@@ -78,9 +81,10 @@ def load_data_from_csv_files(
                         }
                         full_massive_data.append(loading_row)
             except Exception as e:
-                print(f'Ошибка при загрузке данных из {filename}: {e}')
+                print(f'Ошибка при загрузке данных из {file_path}: {e}')
+                sys.exit(1)
         else:
-            print(f'Файл {filename} - заголовки НЕ соответствуют, пропускаем')
+            print(f'Файл {file_path} - заголовки НЕ соответствуют, пропускаем')
     return full_massive_data
 
 
@@ -98,20 +102,16 @@ def print_report(massive_data_list):
 
 
 def main():
-    # console_files, console_report_name = parse_arguments()
-    parse_arguments()
-    # print(console_files)
-    # print(console_report_name)
+    console_files, console_report_name = parse_arguments()
+    print(f'Старт отчета: {console_report_name}')
+    print(f'файлы для анализа: {console_files}')
     print('----------------------------------------------------------------------')
-    # data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
-    # if not data_files_name_list:
-    #     print('Нет файлов данных .csv для обработки. Программа завершена')
-    #     sys.exit(1)
-    # print(f'список файлов в папке data/ {data_files_name_list}')
-    # full_path_data = os.path.abspath(DATA_FOLDER)
-    # full_massive_data = load_data_from_csv_files(
-    #     full_path_data, data_files_name_list, EXPECTED_HEADERS
-    # )
+    full_massive_data = load_data_from_csv_files(
+        console_files, EXPECTED_HEADERS
+    )
+    if not full_massive_data:
+        print('Нет данных для анализа')
+        sys.exit(1)
     # print_report(full_massive_data)
 
 
