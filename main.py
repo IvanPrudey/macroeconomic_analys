@@ -26,7 +26,7 @@ def parse_arguments():
         choices=list(AVAILABLE_REPORTS.keys()),
         help=f"Доступные варианты отчетов {', '.join(AVAILABLE_REPORTS.keys())}"
     )
-    return parser.parse_args()
+    return parser.parse_args().files, parser.parse_args().report
 
 
 def verify_csv_headers(file_path, expected_headers_str):
@@ -98,20 +98,21 @@ def print_report(massive_data_list):
 
 
 def main():
-    console_args = parse_arguments()
-    print(console_args)
-    print(type(console_args))
+    # console_files, console_report_name = parse_arguments()
+    parse_arguments()
+    # print(console_files)
+    # print(console_report_name)
     print('----------------------------------------------------------------------')
-    data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
-    if not data_files_name_list:
-        print('Нет файлов данных .csv для обработки. Программа завершена')
-        sys.exit(1)
-    print(f'список файлов в папке data/ {data_files_name_list}')
-    full_path_data = os.path.abspath(DATA_FOLDER)
-    full_massive_data = load_data_from_csv_files(
-        full_path_data, data_files_name_list, EXPECTED_HEADERS
-    )
-    print_report(full_massive_data)
+    # data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
+    # if not data_files_name_list:
+    #     print('Нет файлов данных .csv для обработки. Программа завершена')
+    #     sys.exit(1)
+    # print(f'список файлов в папке data/ {data_files_name_list}')
+    # full_path_data = os.path.abspath(DATA_FOLDER)
+    # full_massive_data = load_data_from_csv_files(
+    #     full_path_data, data_files_name_list, EXPECTED_HEADERS
+    # )
+    # print_report(full_massive_data)
 
 
 if __name__ == '__main__':
