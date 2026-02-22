@@ -30,13 +30,46 @@ def create_list_of_files_csv(data_folder):
         return data_files_name_list
 
 
+def load_data_from_csv_files(
+        full_path_data, data_files_name_list, expected_headers
+):
+    full_massive_data = []
+    for filename in data_files_name_list:
+        file_path = os.path.join(full_path_data, filename)
+        if verify_csv_headers(file_path, expected_headers):
+            print(f'{filename} - заголовки корректны, стартуем загрузку даных')
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    reader = csv.DictReader(file)
+                    for row in reader:
+                        loading_row = {
+                            'country': row['country'],
+                            'year': int(row['year']),
+                            'gdp': float(row['gdp']),
+                            'gdp_growth': float(row['gdp_growth']),
+                            'inflation': float(row['inflation']),
+                            'unemployment': float(row['unemployment']),
+                            'population': int(row['population']),
+                            'continent': row['continent']
+                        }
+                        full_massive_data.append(loading_row)
+            except Exception as e:
+                print(f'Ошибка при загрузке данных из {filename}: {e}')
+        else:
+            print(f'Файл {filename} - заголовки НЕ соответствуют, пропускаем')
+    return full_massive_data
+
+
 def main():
-    full_path_data = os.path.abspath(DATA_FOLDER)
     data_files_name_list = create_list_of_files_csv(DATA_FOLDER)
     if not data_files_name_list:
         print('Нет файлов данных .csv для обработки. Программа завершена')
         sys.exit(1)
     print(f'список файлов в папке data/ {data_files_name_list}')
+    full_path_data = os.path.abspath(DATA_FOLDER)
+    full_massive_data = load_data_from_csv_files(full_path_data, data_files_name_list, EXPECTED_HEADERS)
+    print(full_massive_data)
+
 
 
 if __name__ == '__main__':
