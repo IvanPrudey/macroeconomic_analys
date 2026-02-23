@@ -16,8 +16,26 @@ class AverageGdpReport(Report):
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        calculated_data = data
-        return calculated_data
+        country_gdp_sum = {}
+        country_count = {}
+        for row in data:
+            country = row['country']
+            gdp = row['gdp']
+            if country not in country_gdp_sum:
+                country_gdp_sum[country] = 0
+                country_count[country] = 0
+            country_gdp_sum[country] += gdp
+            country_count[country] += 1
+        result = []
+        for country in country_gdp_sum:
+            avg_gdp = country_gdp_sum[country] / country_count[country]
+            result.append(
+                {
+                    'country': country,
+                    'gdp': avg_gdp,
+                }
+            )
+        return result
 
 
 class SomeReport(Report):
@@ -28,9 +46,10 @@ class SomeReport(Report):
 
     @property
     def headers(self) -> List[str]:
-        return ['some_1', 'some_2']
+        return ['country', 'year', 'population']
 
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        return f'Результат {self.name} отчета со столбцами {self.headers}'
+        calculated_data = data
+        return calculated_data
