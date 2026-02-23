@@ -98,12 +98,17 @@ def print_report(report_data, headers):
         row_values = [row[header] for header in headers]
         table_data.append([i] + row_values)
     display_headers = [''] + headers
-    print(tabulate(table_data, headers=display_headers, tablefmt='grid'))
+    print(tabulate(
+        table_data,
+        headers=display_headers,
+        tablefmt='grid',
+        floatfmt='.2f'
+    ))
 
 
 def main():
     console_files, console_report_name = parse_arguments(AVAILABLE_REPORTS)
-    if console_report_name not in AVAILABLE_REPORTS.keys(): # можно убрать, т.к. choices уже есть в argparse
+    if console_report_name not in AVAILABLE_REPORTS.keys():
         print(f'Отчета с именем {console_report_name} нет в списке доступных')
         print(f'Доступные отчеты: {", ".join(AVAILABLE_REPORTS.keys())}')
         sys.exit(1)

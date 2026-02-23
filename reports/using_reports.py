@@ -36,7 +36,7 @@ class AverageGdpReport(Report):
             result.append(
                 {
                     'country': country,
-                    'gdp': round(avg_gdp)
+                    'gdp': round(avg_gdp, 2)
                 }
             )
         result.sort(key=get_gdp, reverse=True)
