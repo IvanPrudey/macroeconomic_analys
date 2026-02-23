@@ -1,4 +1,5 @@
 from constants import AVAILABLE_REPORTS, DATA_FOLDER, EXPECTED_HEADERS
+from reports.using_reports import AverageGdpReport
 
 
 class TestAvailableReportsConstant:
@@ -6,14 +7,33 @@ class TestAvailableReportsConstant:
     def test_available_reports_is_dict(self):
         assert isinstance(AVAILABLE_REPORTS, dict)
 
+    def test_available_reports_not_empty(self):
+        assert len(AVAILABLE_REPORTS) > 0
+
+    def test_average_gdp_exist(self):
+        assert 'average-gdp' in AVAILABLE_REPORTS.keys()
+        assert AVAILABLE_REPORTS['average-gdp'] == AverageGdpReport
+
 
 class TestDataFolderConstant:
 
     def test_data_folder_is_str(self):
         assert isinstance(DATA_FOLDER, str)
 
+    def test_data_folder_not_empty(self):
+        assert DATA_FOLDER != ''
+
 
 class TestExpectedHeadersConstant:
 
     def test_expected_headers_is_str(self):
         assert isinstance(EXPECTED_HEADERS, str)
+
+    def test_expected_headers_not_empty(self):
+        assert EXPECTED_HEADERS != ''
+
+    def test_correct_headers(self):
+        assert EXPECTED_HEADERS == (
+            'country,year,gdp,gdp_growth,inflation,'
+            'unemployment,population,continent'
+        )
