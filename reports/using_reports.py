@@ -16,7 +16,8 @@ class AverageGdpReport(Report):
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        return f'Результат {self.name} отчета со столбцами {self.headers}'
+        calculated_data = data
+        return calculated_data
 
 
 class SomeReport(Report):

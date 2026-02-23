@@ -121,8 +121,8 @@ def main():
         report_class = AVAILABLE_REPORTS[console_report_name]
         report = report_class()
         report_data = report.calculate(full_massive_data)
-        print('--------------111---------------')
-        print(report_data)
+        print(f'------{report.name}--{", ".join(console_files)}------')
+        print_report(report_data, report.headers)
 
 
 if __name__ == '__main__':
