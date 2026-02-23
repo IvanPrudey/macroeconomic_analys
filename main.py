@@ -11,6 +11,13 @@ from constants import (
     EXPECTED_HEADERS,
 )
 
+MSG_HELP_1 = (
+    'Перечень .csv файлов для анализа '
+    '(можно указать несколько через пробел)'
+)
+MSG_HELP_2 = 'Доступные варианты отчетов'
+MSG_INFO_1 = 'заголовки НЕ соответствуют, пропускаем'
+
 
 def parse_arguments(available_reports):
     parser = argparse.ArgumentParser()
@@ -18,13 +25,13 @@ def parse_arguments(available_reports):
         '--files',
         nargs='+',
         required=True,
-        help='Перечень .csv файлов для анализа(можно указать несколько через пробел)'
+        help=MSG_HELP_1
     )
     parser.add_argument(
         '--report',
         required=True,
         choices=list(available_reports.keys()),
-        help=f"Доступные варианты отчетов {', '.join(available_reports.keys())}"
+        help=f'{MSG_HELP_2}: {", ".join(available_reports.keys())}'
     )
     parse_args = parser.parse_args()
     return parse_args.files, parse_args.report
@@ -42,19 +49,6 @@ def verify_csv_headers(file_path, expected_headers_str):
         return False
 
 
-# def create_list_of_files_csv(data_folder):
-#     data_files_name_list = []
-#     if os.path.exists(data_folder):
-#         for filename in os.listdir(data_folder):
-#             file_path = os.path.join(data_folder, filename)
-#             if os.path.isfile(file_path) and filename.endswith('.csv'):
-#                 data_files_name_list.append(filename)
-#         return data_files_name_list
-#     else:
-#         print(f'Папка {data_folder} не существует')
-#         return data_files_name_list
-
-
 def load_data_from_csv_files(
         data_files_pathes, full_path_data_folder, expected_headers
 ):
@@ -65,7 +59,7 @@ def load_data_from_csv_files(
             print(f'Файл {full_file_path} отсутствует')
             sys.exit(1)
         if verify_csv_headers(full_file_path, expected_headers):
-            print(f'{full_file_path} - заголовки корректны, стартуем загрузку данных')
+            print(f'{full_file_path} - заголовки корректны')
             try:
                 with open(full_file_path, 'r', encoding='utf-8') as file:
                     reader = csv.DictReader(file)
@@ -85,7 +79,7 @@ def load_data_from_csv_files(
                 print(f'Ошибка при загрузке данных из {full_file_path}: {e}')
                 sys.exit(1)
         else:
-            print(f'Файл {full_file_path} - заголовки НЕ соответствуют, пропускаем')
+            print(f'Файл {full_file_path} - {MSG_INFO_1}')
     return full_massive_data
 
 
