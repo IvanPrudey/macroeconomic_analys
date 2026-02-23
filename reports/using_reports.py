@@ -16,6 +16,10 @@ class AverageGdpReport(Report):
     def calculate(
             self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
+
+        def get_gdp(item):
+            return item['gdp']
+
         country_gdp_sum = {}
         country_count = {}
         for row in data:
@@ -32,9 +36,10 @@ class AverageGdpReport(Report):
             result.append(
                 {
                     'country': country,
-                    'gdp': avg_gdp,
+                    'gdp': round(avg_gdp)
                 }
             )
+        result.sort(key=get_gdp, reverse=True)
         return result
 
 
