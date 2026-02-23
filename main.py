@@ -89,16 +89,15 @@ def load_data_from_csv_files(
     return full_massive_data
 
 
-def print_report(massive_data_list):
-    if not massive_data_list:
+def print_report(report_data, headers):
+    if not report_data:
         print('Данные для вывода отсутствуют')
         return
-    headers_of_table = list(massive_data_list[0].keys())
     table_data = []
-    for i, row in enumerate(massive_data_list, 1):
-        row_values = [row[key] for key in headers_of_table]
+    for i, row in enumerate(report_data, 1):
+        row_values = [row[header] for header in headers]
         table_data.append([i] + row_values)
-        display_headers = [''] + headers_of_table
+    display_headers = [''] + headers
     print(tabulate(table_data, headers=display_headers, tablefmt='grid'))
 
 
@@ -108,21 +107,22 @@ def main():
         print(f'Отчета с именем {console_report_name} нет в списке доступных')
         print(f'Доступные отчеты: {", ".join(AVAILABLE_REPORTS.keys())}')
         sys.exit(1)
-    print(f'Старт отчета: {console_report_name}')
-    print(f'Файлы для анализа: {console_files}')
-    full_path_data = os.path.abspath(DATA_FOLDER)
-    full_massive_data = load_data_from_csv_files(
-        console_files, full_path_data, EXPECTED_HEADERS
-    )
-    if not full_massive_data:
-        print('Нет данных для анализа')
-        sys.exit(1)
-    print(f'Загружено {len(full_massive_data)} записей!')
-    report_class = AVAILABLE_REPORTS[console_report_name]
-    report = report_class()
-    report_data = report.calculate(full_massive_data)
-    print('--------------111---------------')
-    print(report_data)
+    else:
+        print(f'Старт отчета: {console_report_name}')
+        print(f'Файлы для анализа: {console_files}')
+        full_path_data = os.path.abspath(DATA_FOLDER)
+        full_massive_data = load_data_from_csv_files(
+            console_files, full_path_data, EXPECTED_HEADERS
+        )
+        if not full_massive_data:
+            print('Нет данных для анализа')
+            sys.exit(1)
+        print(f'Загружено {len(full_massive_data)} записей!')
+        report_class = AVAILABLE_REPORTS[console_report_name]
+        report = report_class()
+        report_data = report.calculate(full_massive_data)
+        print('--------------111---------------')
+        print(report_data)
 
 
 if __name__ == '__main__':
