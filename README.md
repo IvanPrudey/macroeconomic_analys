@@ -6,8 +6,38 @@
 кандидат на вакансию Python-разработчик (Junior) StafIT
 ```
 
+### Как запустить проект:
+1. Клонировать репозиторий и перейти в него в командной строке:
+```
+git clone https://github.com/IvanPrudey/macroeconomic_analys.git
+```
+```
+cd macroeconomic_analys
+```
+
+2. Cоздать и активировать виртуальное окружение: 
+``` 
+python -m venv venv 
+``` 
+``` 
+source venv/Scripts/activate 
+```
+
+3. Установить зависимости из файла requirements.txt: 
+``` 
+python -m pip install --upgrade pip 
+``` 
+``` 
+pip install -r requirements.txt 
+```
+
+4. проверить автотестами:
+```
+pytest -v
+```
+
 ### Примеры использования приложения
-Находясь в корневой директории проекта macroeconomic_analys/
+Находясь в корневой директории проекта macroeconomic_analys/  
 Пишем в консоли, в моем случае Git Bash:
 
 1. Пример использования нескольких файлов данных .csv
