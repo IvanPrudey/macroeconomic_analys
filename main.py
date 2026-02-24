@@ -101,27 +101,44 @@ def print_report(report_data, headers):
 
 
 def main():
-    console_files, console_report_name = parse_arguments(AVAILABLE_REPORTS)
+    try:
+        console_files, console_report_name = parse_arguments(AVAILABLE_REPORTS)
+    except Exception as e:
+        print(f'Ошибка при разборе аргументов командной строки: {e}')
+        sys.exit(1)
+
     if console_report_name not in AVAILABLE_REPORTS.keys():
         print(f'Отчета с именем {console_report_name} нет в списке доступных')
         print(f'Доступные отчеты: {", ".join(AVAILABLE_REPORTS.keys())}')
         sys.exit(1)
-    else:
-        print(f'Старт отчета: {console_report_name}')
-        print(f'Файлы для анализа: {console_files}')
-        full_path_data = os.path.abspath(DATA_FOLDER)
-        full_massive_data = load_data_from_csv_files(
-            console_files, full_path_data, EXPECTED_HEADERS
-        )
-        if not full_massive_data:
-            print('Нет данных для анализа')
-            sys.exit(1)
-        print(f'Загружено {len(full_massive_data)} записей!')
+    print(f'Старт отчета: {console_report_name}')
+    print(f'Файлы для анализа: {console_files}')
+    full_path_data = os.path.abspath(DATA_FOLDER)
+    full_massive_data = load_data_from_csv_files(
+        console_files, full_path_data, EXPECTED_HEADERS
+    )
+
+    if not full_massive_data:
+        print('Нет данных для анализа')
+        sys.exit(1)
+    print(f'Загружено {len(full_massive_data)} записей!')
+
+    try:
         report_class = AVAILABLE_REPORTS[console_report_name]
         report = report_class()
         report_data = report.calculate(full_massive_data)
+    except KeyError as e:
+        print(f'Ошибка: класс отчета не найден - {e}')
+        sys.exit(1)
+    except Exception as e:
+        print(f'Непредвиденная ошибка при расчетах: {e}')
+        sys.exit(1)
+    try:
         print(f'------{report.name}--{", ".join(console_files)}------')
         print_report(report_data, report.headers)
+    except Exception as e:
+        print(f'Ошибка при выводе отчета: {e}')
+        sys.exit(1)
 
 
 if __name__ == '__main__':

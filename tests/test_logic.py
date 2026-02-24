@@ -6,13 +6,13 @@ from main import (
     parse_arguments,
 )
 
+from reports.using_reports import AverageGdpReport
 from tests.constants_for_test import (
     TEST_AVG_GDP_OF_RUSSIA,
     TEST_COUNT_FIELDS_IN_AVG_GDP_REPORT,
     TEST_COUNT_ROWS_OF_TWO_FILES,
     TEST_EXIT_CODE_OF_EXCEPTION,
 )
-from reports.using_reports import AverageGdpReport
 
 
 class TestVerifyCsvHeaders:
