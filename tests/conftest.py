@@ -38,6 +38,11 @@ def expected_headers_list():
 
 
 @pytest.fixture
+def expected_headers_string():
+    return EXPECTED_HEADERS
+
+
+@pytest.fixture
 def temp_csv_with_correct_headers_without_data(expected_headers_list):
     with tempfile.NamedTemporaryFile(
         mode='w',
