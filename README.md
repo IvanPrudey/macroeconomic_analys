@@ -118,3 +118,10 @@ GDP = 2
 row = ('China', 2023, 1394)
 print(row[COUNTRY])
 ```
+
+### Добавление нового отчета
+1. Создать класс в `reports/using_reports.py`, наследуемся от `Report`
+2. Задать имя отчета `name`
+3. Указать нужные заголовки `headers`
+4. Заложить логику в метод `calculate`
+5. Добавить класс в `AVAILABLE_REPORTS` в `constants.py`

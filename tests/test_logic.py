@@ -134,3 +134,7 @@ class TestAverageGdpReport:
 
 class TestPrintReport:
     pass
+
+
+class TestParseArguments:
+    pass
