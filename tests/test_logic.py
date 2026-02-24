@@ -24,4 +24,3 @@ class TestVerifyCsvHeaders:
             expected_headers_string
         )
         assert result is False
-
