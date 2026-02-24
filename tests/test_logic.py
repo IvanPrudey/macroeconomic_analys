@@ -8,6 +8,8 @@ from main import (
 from reports.using_reports import AverageGdpReport
 
 TEST_COUNT_ROWS_OF_TWO_FILES = 7
+TEST_AVG_GDP_OF_RUSSIA = 18250
+COUNT_FIELDS_IN_AVG_GDP_REPORT = 2
 
 
 class TestVerifyCsvHeaders:
@@ -105,6 +107,29 @@ class TestAverageGdpReport:
         report = AverageGdpReport()
         result = report.calculate(correct_some_test_data)
         assert isinstance(result, list)
+
+    def test_calculate_returns_elements_with_correct_keys(
+            self,
+            correct_some_test_data
+    ):
+        report = AverageGdpReport()
+        result = report.calculate(correct_some_test_data)
+        for item in result:
+            assert isinstance(item, dict)
+            assert 'country' in item
+            assert 'gdp' in item
+            assert len(item) == COUNT_FIELDS_IN_AVG_GDP_REPORT
+
+    def test_average_calculation_for_russia(self, correct_some_test_data):
+        report = AverageGdpReport()
+        result = report.calculate(correct_some_test_data)
+        russia_item = None
+        for item in result:
+            if item['country'] == 'Russia':
+                russia_item = item
+                break
+        assert russia_item is not None
+        assert russia_item['gdp'] == TEST_AVG_GDP_OF_RUSSIA
 
 
 class TestPrintReport:

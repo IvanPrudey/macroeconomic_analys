@@ -13,7 +13,7 @@ SOME_TEST_DATA = [
     {
         'country': 'Russia',
         'year': 2023,
-        'gdp': 18600.0,
+        'gdp': 18600,
         'gdp_growth': 2.1,
         'inflation': 5.9,
         'unemployment': 3.2,
