@@ -6,11 +6,13 @@ from main import (
     parse_arguments,
 )
 
+from tests.constants_for_test import (
+    TEST_AVG_GDP_OF_RUSSIA,
+    TEST_COUNT_FIELDS_IN_AVG_GDP_REPORT,
+    TEST_COUNT_ROWS_OF_TWO_FILES,
+    TEST_EXIT_CODE_OF_EXCEPTION,
+)
 from reports.using_reports import AverageGdpReport
-
-TEST_COUNT_ROWS_OF_TWO_FILES = 7
-TEST_AVG_GDP_OF_RUSSIA = 18250
-COUNT_FIELDS_IN_AVG_GDP_REPORT = 2
 
 
 class TestVerifyCsvHeaders:
@@ -119,7 +121,7 @@ class TestAverageGdpReport:
             assert isinstance(item, dict)
             assert 'country' in item
             assert 'gdp' in item
-            assert len(item) == COUNT_FIELDS_IN_AVG_GDP_REPORT
+            assert len(item) == TEST_COUNT_FIELDS_IN_AVG_GDP_REPORT
 
     def test_average_calculation_for_russia(self, correct_some_test_data):
         report = AverageGdpReport()
@@ -157,11 +159,18 @@ class TestParseArguments:
         monkeypatch.setattr('sys.argv', test_args)
         with pytest.raises(SystemExit) as excinfo:
             parse_arguments(available_reports_sample)
-        assert excinfo.value.code == 2
+        assert excinfo.value.code == TEST_EXIT_CODE_OF_EXCEPTION
 
     def test_without_report_arg(self, available_reports_sample, monkeypatch):
         test_args = ['main.py', '--files', 'data.csv']
         monkeypatch.setattr('sys.argv', test_args)
         with pytest.raises(SystemExit) as excinfo:
             parse_arguments(available_reports_sample)
-        assert excinfo.value.code == 2
+        assert excinfo.value.code == TEST_EXIT_CODE_OF_EXCEPTION
+
+    def test_invalid_report_name(self, available_reports_sample, monkeypatch):
+        test_args = ['main.py', '--files', 'data.csv', '--report', 'invalid']
+        monkeypatch.setattr('sys.argv', test_args)
+        with pytest.raises(SystemExit) as excinfo:
+            parse_arguments(available_reports_sample)
+        assert excinfo.value.code == TEST_EXIT_CODE_OF_EXCEPTION
