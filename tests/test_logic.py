@@ -1,8 +1,11 @@
 import os
+import pytest
 from main import (
     verify_csv_headers,
     load_data_from_csv_files,
 )
+
+TEST_COUNT_ROWS_OF_TWO_FILES = 7
 
 
 class TestVerifyCsvHeaders:
@@ -74,4 +77,22 @@ class TestLoadDataFromCsvFiles:
             folder,
             expected_headers_string
         )
-        assert len(result) == 7
+        assert len(result) == TEST_COUNT_ROWS_OF_TWO_FILES
+
+    def test_file_not_exits(self, expected_headers_string):
+        folder = 'some_folder'
+        filename = 'some_file.csv'
+        with pytest.raises(SystemExit):
+            load_data_from_csv_files(
+                [filename],
+                folder,
+                expected_headers_string
+            )
+
+
+class TestAverageGdpReport:
+    pass
+
+
+class TestPrintReport:
+    pass
