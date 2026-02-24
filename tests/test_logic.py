@@ -13,3 +13,15 @@ class TestVerifyCsvHeaders:
             expected_headers_string
         )
         assert result is True
+
+    def test_invalid_headers_returns_false(
+            self,
+            temp_csv_with_invalid_headers_without_data,
+            expected_headers_string
+    ):
+        result = verify_csv_headers(
+            temp_csv_with_invalid_headers_without_data,
+            expected_headers_string
+        )
+        assert result is False
+
