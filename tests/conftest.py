@@ -115,3 +115,39 @@ def temp_csv_with_test_data(correct_some_test_data, expected_headers_list):
     yield temp_file
     if os.path.exists(temp_file):
         os.unlink(temp_file)
+
+
+@pytest.fixture
+def temp_csv_with_one_row_data(expected_headers_list):
+    test_data = {
+        'country': 'test country',
+        'year': '2000',
+        'gdp': '1000',
+        'gdp_growth': '2.5',
+        'inflation': '3.0',
+        'unemployment': '5.0',
+        'population': '10',
+        'continent': 'test continent'
+    }
+    with tempfile.NamedTemporaryFile(
+        mode='w',
+        suffix='.csv',
+        delete=False,
+        encoding='utf-8'
+    ) as f:
+        writer = csv.writer(f)
+        writer.writerow(expected_headers_list)
+        writer.writerow([
+            test_data['country'],
+            test_data['year'],
+            test_data['gdp'],
+            test_data['gdp_growth'],
+            test_data['inflation'],
+            test_data['unemployment'],
+            test_data['population'],
+            test_data['continent']
+        ])
+        temp_file = f.name
+    yield temp_file
+    if os.path.exists(temp_file):
+        os.unlink(temp_file)

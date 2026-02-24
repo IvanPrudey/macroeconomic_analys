@@ -59,3 +59,19 @@ class TestLoadDataFromCsvFiles:
         assert isinstance(result, list)
         assert len(result) == len(correct_some_test_data)
         assert result[0]['country'] == 'Russia'
+
+    def test_load_two_files(
+            self,
+            temp_csv_with_test_data,
+            temp_csv_with_one_row_data,
+            expected_headers_string
+    ):
+        folder = os.path.dirname(temp_csv_with_test_data)
+        filename_1 = os.path.basename(temp_csv_with_test_data)
+        filename_2 = os.path.basename(temp_csv_with_one_row_data)
+        result = load_data_from_csv_files(
+            [filename_1, filename_2],
+            folder,
+            expected_headers_string
+        )
+        assert len(result) == 7
