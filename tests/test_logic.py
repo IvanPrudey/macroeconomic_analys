@@ -5,6 +5,8 @@ from main import (
     load_data_from_csv_files,
 )
 
+from reports.using_reports import AverageGdpReport
+
 TEST_COUNT_ROWS_OF_TWO_FILES = 7
 
 
@@ -91,7 +93,18 @@ class TestLoadDataFromCsvFiles:
 
 
 class TestAverageGdpReport:
-    pass
+    def test_report_name(self):
+        report = AverageGdpReport()
+        assert report.name == 'average-gdp'
+
+    def test_report_headers(self):
+        report = AverageGdpReport()
+        assert report.headers == ['country', 'gdp']
+
+    def test_calculate_returns_list(self, correct_some_test_data):
+        report = AverageGdpReport()
+        result = report.calculate(correct_some_test_data)
+        assert isinstance(result, list)
 
 
 class TestPrintReport:
