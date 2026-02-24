@@ -1,3 +1,10 @@
+'''
+Приложение для макроэкономического анализа данных из .csv файлов.
+Читает данные с экономическими показателями стран,
+формирует отчет по заданным параметрам и выводит результаты в виде таблицы.
+Поддерживает добавление отчетов через базовый класс Report.
+'''
+
 import argparse
 import csv
 import os
@@ -20,6 +27,7 @@ MSG_INFO_1 = 'заголовки НЕ соответствуют, пропуск
 
 
 def parse_arguments(available_reports):
+    '''Парсит аргументы командной строки --files и --report.'''
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--files',
@@ -38,6 +46,7 @@ def parse_arguments(available_reports):
 
 
 def verify_csv_headers(file_path, expected_headers_str):
+    '''Проверяет соответствие заголовков .csv файла ожидаемым.'''
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
@@ -52,6 +61,7 @@ def verify_csv_headers(file_path, expected_headers_str):
 def load_data_from_csv_files(
         data_files_pathes, full_path_data_folder, expected_headers
 ):
+    '''Загружает данные из .csv файлов в список словарей.'''
     full_massive_data = []
     for file_path in data_files_pathes:
         full_file_path = os.path.join(full_path_data_folder, file_path)
@@ -84,6 +94,7 @@ def load_data_from_csv_files(
 
 
 def print_report(report_data, headers):
+    '''Выводит на экран отчет в виде таблицы.'''
     if not report_data:
         print('Данные для вывода отсутствуют')
         return
@@ -101,6 +112,7 @@ def print_report(report_data, headers):
 
 
 def main():
+    '''Основная реализаця программы.'''
     try:
         console_files, console_report_name = parse_arguments(AVAILABLE_REPORTS)
     except Exception as e:
