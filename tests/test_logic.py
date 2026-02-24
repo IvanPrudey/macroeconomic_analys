@@ -3,6 +3,7 @@ import pytest
 from main import (
     verify_csv_headers,
     load_data_from_csv_files,
+    parse_arguments,
 )
 
 from reports.using_reports import AverageGdpReport
@@ -137,4 +138,16 @@ class TestPrintReport:
 
 
 class TestParseArguments:
-    pass
+
+    def test_correct_arguments(self, available_reports_sample, monkeypatch):
+        test_args = [
+            'main.py',
+            '--files',
+            'example.csv',
+            '--report',
+            'average-gdp'
+        ]
+        monkeypatch.setattr('sys.argv', test_args)
+        files, report = parse_arguments(available_reports_sample)
+        assert files == ['example.csv']
+        assert report == 'average-gdp'

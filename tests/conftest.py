@@ -4,7 +4,12 @@ import pytest
 import tempfile
 from pathlib import Path
 
-from constants import DATA_FOLDER, EXPECTED_HEADERS, SOME_TEST_DATA
+from constants import (
+    AVAILABLE_REPORTS,
+    DATA_FOLDER,
+    EXPECTED_HEADERS,
+    SOME_TEST_DATA,
+)
 
 
 @pytest.fixture
@@ -151,3 +156,8 @@ def temp_csv_with_one_row_data(expected_headers_list):
     yield temp_file
     if os.path.exists(temp_file):
         os.unlink(temp_file)
+
+
+@pytest.fixture
+def available_reports_sample():
+    return AVAILABLE_REPORTS

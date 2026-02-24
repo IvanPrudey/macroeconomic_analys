@@ -125,3 +125,5 @@ print(row[COUNTRY])
 3. Указать нужные заголовки `headers`
 4. Заложить логику в метод `calculate`
 5. Добавить класс в `AVAILABLE_REPORTS` в `constants.py`
+
+PS* отчет some - это пример добавления отчета
