@@ -1,9 +1,7 @@
 import pytest
 from pathlib import Path
 
-from constants import DATA_FOLDER
-
-TEST DATA
+from constants import DATA_FOLDER, SOME_TEST_DATA
 
 
 @pytest.fixture

@@ -9,7 +9,7 @@ AVAILABLE_REPORTS = {
     'average-gdp': AverageGdpReport,
     'some': SomeReport,
 }
-TEST_DATA = [
+SOME_TEST_DATA = [
     {
         'country': 'Russia',
         'year': 2023,
