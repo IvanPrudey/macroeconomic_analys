@@ -151,3 +151,17 @@ class TestParseArguments:
         files, report = parse_arguments(available_reports_sample)
         assert files == ['example.csv']
         assert report == 'average-gdp'
+
+    def test_without_files_arg(self, available_reports_sample, monkeypatch):
+        test_args = ['main.py', '--report', 'average-gdp']
+        monkeypatch.setattr('sys.argv', test_args)
+        with pytest.raises(SystemExit) as excinfo:
+            parse_arguments(available_reports_sample)
+        assert excinfo.value.code == 2
+
+    def test_without_report_arg(self, available_reports_sample, monkeypatch):
+        test_args = ['main.py', '--files', 'data.csv']
+        monkeypatch.setattr('sys.argv', test_args)
+        with pytest.raises(SystemExit) as excinfo:
+            parse_arguments(available_reports_sample)
+        assert excinfo.value.code == 2
