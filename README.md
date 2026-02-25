@@ -127,3 +127,31 @@ print(row[COUNTRY])
 5. Добавить класс в `AVAILABLE_REPORTS` в `constants.py`
 
 PS* отчет some - это пример добавления отчета
+
+покрытие тестами 85%
+основной модуль main.py всего на 48%
+```
+pytest --cov=.
+```
+```
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.9.13-final-0 _______________
+
+Name                          Stmts   Miss  Cover
+-------------------------------------------------
+constants.py                      5      0   100%
+main.py                          91     47    48%
+reports\__init__.py               0      0   100%
+reports\base_report.py           14      3    79%
+reports\using_reports.py         38      4    89%
+tests\__init__.py                 0      0   100%
+tests\conftest.py                79      1    99%
+tests\constants_for_test.py       4      0   100%
+tests\test_constants.py          34      0   100%
+tests\test_logic.py              90      0   100%
+tests\test_structure.py          21      0   100%
+-------------------------------------------------
+TOTAL                           376     55    85%
+============================= 35 passed in 0.20s ==============================
+
+```
