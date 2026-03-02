@@ -12,6 +12,8 @@ import sys
 
 from tabulate import tabulate
 
+
+
 from constants import (
     AVAILABLE_REPORTS,
     DATA_FOLDER,
